@@ -392,7 +392,8 @@ public class UIPortal extends UIContainer
    public void setShowInfobar(Boolean value) {
       if(value)
          setProperty(PortalProperties.SHOW_PORTLET_INFO, "1");
-      setProperty(PortalProperties.SHOW_PORTLET_INFO, "0");
+      else
+         setProperty(PortalProperties.SHOW_PORTLET_INFO, "0");
    }
    
    public String getLabel()

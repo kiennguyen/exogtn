@@ -27,6 +27,7 @@ import org.exoplatform.portal.config.model.ApplicationState;
 import org.exoplatform.portal.config.model.ApplicationType;
 import org.exoplatform.portal.config.model.CloneApplicationState;
 import org.exoplatform.portal.config.model.Container;
+import org.exoplatform.portal.config.model.PortalProperties;
 import org.exoplatform.portal.config.model.TransientApplicationState;
 import org.exoplatform.portal.webui.application.PortletState;
 import org.exoplatform.portal.webui.application.UIPortlet;
@@ -332,6 +333,11 @@ public class UIPortalComponentActionListener
                }
                uiPortlet.setPortletInPortal(uiTarget instanceof UIPortal);
                uiPortlet.setShowEditControl(true);
+               
+               //TODO Wait to fix issue EXOGTN-213 and then
+               //we should get "showInfobar" from current UI portal
+               UserPortalConfigService service = uiApp.getApplicationComponent(UserPortalConfigService.class);
+               uiPortlet.setShowInfoBar(service.getUserPortalConfig(Util.getUIPortal().getOwner(), pcontext.getRemoteUser()).getPortalConfig().isShowInfobar()); 
                uiSource = uiPortlet;
             }
             List<UIComponent> children = uiTarget.getChildren();

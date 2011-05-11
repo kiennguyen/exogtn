@@ -243,6 +243,20 @@ public class PortalConfig extends ModelObject
    {
       setProperty(PortalProperties.SESSION_ALIVE, type);
    }
+   
+   public Boolean isShowInfobar() {
+      String value = getProperty(PortalProperties.SHOW_PORTLET_INFO, "1");
+      if(Integer.parseInt(value) == 1) {
+         return true;
+      }
+      return false;
+   }
+   
+   public void setShowInfobar(Boolean value) {
+      if(value)
+         setProperty(PortalProperties.SHOW_PORTLET_INFO, "1");
+      setProperty(PortalProperties.SHOW_PORTLET_INFO, "0");
+   }
 
    public void setDescription(String description)
    {

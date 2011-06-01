@@ -268,6 +268,9 @@ function getModule(params)
    new Project("org.exoplatform.portal", "exo.portal.web.portal", "exo-portal", module.version).
       addDependency(jcr.frameworks.web).
       addDependency(jcr.frameworks.command);
+   
+   module.web.openid = 
+   new Project("org.exoplatform.portal", "exo.portal.web.openid", "war", module.version);
 
    module.server = {}
 

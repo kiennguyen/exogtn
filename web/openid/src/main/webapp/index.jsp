@@ -3,18 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>JQuery Simple OpenID Selector Demo</title>
-	<!-- Simple OpenID Selector -->
+	<title>GateIn OpenID Login Module</title>
 	<link type="text/css" rel="stylesheet" href="css/openid.css" />
-	<script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
-	<script type="text/javascript" src="js/openid-jquery.js"></script>
-	<script type="text/javascript" src="js/openid-en.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			openid.init('openid_identifier');
-		});
-	</script>
-	<!-- /Simple OpenID Selector -->
 	<style type="text/css">
 		/* Basic page formatting */
 		body {
@@ -24,14 +14,13 @@
 </head>
 
 <body>
-	<h2>JQuery Simple OpenID Selector Demo</h2>
-	<p>This is a simple example to show how you can include the Javascript into your page.</p>
+	<h2>GateIn OpenID Login Module</h2>
 	<br/>
-	<!-- Simple OpenID Selector -->
+
 	<form action="consumer" method="post" id="openid_form">
 		<input type="hidden" name="action" value="verify" />
 		<fieldset>
-			<legend>Sign-in or Create New Account</legend>
+			<legend>Sign-in with OpenID</legend>
 			<div id="openid_choice">
 				<p>Please click your account provider:</p>
 				<div id="openid_btns"></div>
@@ -40,12 +29,8 @@
 				<input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
 				<input id="openid_submit" type="submit" value="Sign-In"/>
 			</div>
-			<noscript>
-				<p>OpenID is service that allows you to log-on to many different websites using a single indentity.
-				Find out <a href="http://openid.net/what/">more about OpenID</a> and <a href="http://openid.net/get/">how to get an OpenID enabled account</a>.</p>
-			</noscript>
 		</fieldset>
 	</form>
-	<!-- /Simple OpenID Selector -->
+
 </body>
 </html>

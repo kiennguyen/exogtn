@@ -18,8 +18,8 @@
  */
 package org.exoplatform.openid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.log.Log;
 import org.openid4java.OpenIDException;
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
@@ -33,10 +33,8 @@ import org.openid4java.message.AuthSuccess;
 import org.openid4java.message.MessageExtension;
 import org.openid4java.message.ParameterList;
 import org.openid4java.message.ax.AxMessage;
-import org.openid4java.message.ax.FetchRequest;
 import org.openid4java.message.ax.FetchResponse;
 import org.openid4java.message.sreg.SRegMessage;
-import org.openid4java.message.sreg.SRegRequest;
 import org.openid4java.message.sreg.SRegResponse;
 
 import java.io.IOException;
@@ -60,7 +58,7 @@ public class ConsumerServlet extends HttpServlet
 {
    private static final long serialVersionUID = -5998885243419513055L;
 
-   private final Log log = LogFactory.getLog(this.getClass());
+   private final Log log = ExoLogger.getLogger("openid:ConsumerServlet");
 
    private ServletContext context;
 
@@ -81,11 +79,6 @@ public class ConsumerServlet extends HttpServlet
 
       try
       {
-         // --- Forward proxy setup (only if needed) ---
-         // ProxyProperties proxyProps = new ProxyProperties();
-         // proxyProps.setProxyName("proxy.example.com");
-         // proxyProps.setProxyPort(8080);
-         // HttpClientFactory.setProxyProperties(proxyProps);
          this.manager = new ConsumerManager();
          manager.setAssociations(new InMemoryConsumerAssociationStore());
          manager.setNonceVerifier(new InMemoryNonceVerifier(5000));
@@ -171,63 +164,6 @@ public class ConsumerServlet extends HttpServlet
 
          // obtain a AuthRequest message to be sent to the OpenID provider
          AuthRequest authReq = manager.authenticate(discovered, returnToUrl);
-
-         // Attribute Exchange example: fetching the 'email' attribute
-         FetchRequest fetch = FetchRequest.createFetchRequest();
-         SRegRequest sregReq = SRegRequest.createFetchRequest();
-
-         if ("1".equals(httpReq.getParameter("nickname")))
-         {
-            // fetch.addAttribute("nickname",
-            // "http://schema.openid.net/contact/nickname", false);
-            sregReq.addAttribute("nickname", false);
-         }
-         if ("1".equals(httpReq.getParameter("email")))
-         {
-            fetch.addAttribute("email", "http://schema.openid.net/contact/email", false);
-            sregReq.addAttribute("email", false);
-         }
-         if ("1".equals(httpReq.getParameter("fullname")))
-         {
-            fetch.addAttribute("fullname", "http://schema.openid.net/contact/fullname", false);
-            sregReq.addAttribute("fullname", false);
-         }
-         if ("1".equals(httpReq.getParameter("dob")))
-         {
-            fetch.addAttribute("dob", "http://schema.openid.net/contact/dob", true);
-            sregReq.addAttribute("dob", false);
-         }
-         if ("1".equals(httpReq.getParameter("gender")))
-         {
-            fetch.addAttribute("gender", "http://schema.openid.net/contact/gender", false);
-            sregReq.addAttribute("gender", false);
-         }
-         if ("1".equals(httpReq.getParameter("postcode")))
-         {
-            fetch.addAttribute("postcode", "http://schema.openid.net/contact/postcode", false);
-            sregReq.addAttribute("postcode", false);
-         }
-         if ("1".equals(httpReq.getParameter("country")))
-         {
-            fetch.addAttribute("country", "http://schema.openid.net/contact/country", false);
-            sregReq.addAttribute("country", false);
-         }
-         if ("1".equals(httpReq.getParameter("language")))
-         {
-            fetch.addAttribute("language", "http://schema.openid.net/contact/language", false);
-            sregReq.addAttribute("language", false);
-         }
-         if ("1".equals(httpReq.getParameter("timezone")))
-         {
-            fetch.addAttribute("timezone", "http://schema.openid.net/contact/timezone", false);
-            sregReq.addAttribute("timezone", false);
-         }
-
-         // attach the extension to the authentication request
-         if (!sregReq.getAttributes().isEmpty())
-         {
-            authReq.addExtension(sregReq);
-         }
 
          if (!discovered.isVersion2())
          {

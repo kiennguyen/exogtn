@@ -32,8 +32,6 @@ import org.openid4java.message.AuthRequest;
 import org.openid4java.message.AuthSuccess;
 import org.openid4java.message.MessageExtension;
 import org.openid4java.message.ParameterList;
-import org.openid4java.message.ax.AxMessage;
-import org.openid4java.message.ax.FetchResponse;
 import org.openid4java.message.sreg.SRegMessage;
 import org.openid4java.message.sreg.SRegResponse;
 
@@ -132,12 +130,13 @@ public class ConsumerServlet extends HttpServlet
       log.debug("identifier: " + identifier);
       if (identifier == null)
       {
+         req.setAttribute("error", "There is no identifier in response from provider");
          this.getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
       }
       else
       {
          req.setAttribute("identifier", identifier.getIdentifier());
-         this.getServletContext().getRequestDispatcher("/return.jsp").forward(req, resp);
+         this.getServletContext().getRequestDispatcher("/account").forward(req, resp);
       }
    }
 
@@ -178,16 +177,16 @@ public class ConsumerServlet extends HttpServlet
             // Option 2: HTML FORM Redirection (Allows payloads >2048 bytes)
 
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/formredirection.jsp");
-            httpReq.setAttribute("prameterMap", httpReq.getParameterMap());
             httpReq.setAttribute("message", authReq);
-            // httpReq.setAttribute("destinationUrl", httpResp
-            // .getDestinationUrl(false));
             dispatcher.forward(httpReq, httpResp);
          }
       }
       catch (OpenIDException e)
       {
-         // present error to the user
+         // Go back OpenID Login page
+         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+         httpReq.setAttribute("error", userSuppliedString + " OpenID provider is invalid. Or your OpenID provider is down");
+         dispatcher.forward(httpReq, httpResp);
       }
 
       return null;
@@ -233,25 +232,6 @@ public class ConsumerServlet extends HttpServlet
                      String name = (String)iter.next();
                      String value = sregResp.getParameterValue(name);
                      httpReq.setAttribute(name, value);
-                  }
-               }
-            }
-            if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX))
-            {
-               FetchResponse fetchResp = (FetchResponse)authSuccess.getExtension(AxMessage.OPENID_NS_AX);
-
-               // List emails = fetchResp.getAttributeValues("email");
-               // String email = (String) emails.get(0);
-
-               List aliases = fetchResp.getAttributeAliases();
-               for (Iterator iter = aliases.iterator(); iter.hasNext();)
-               {
-                  String alias = (String)iter.next();
-                  List values = fetchResp.getAttributeValues(alias);
-                  if (values.size() > 0)
-                  {
-                     log.debug(alias + " : " + values.get(0));
-                     httpReq.setAttribute(alias, values.get(0));
                   }
                }
             }

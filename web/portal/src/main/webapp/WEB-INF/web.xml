@@ -234,7 +234,17 @@
     <servlet-class>org.gatein.wci.api.GateInServlet</servlet-class>
     <load-on-startup>0</load-on-startup>
   </servlet>
-
+ 
+  <!-- OpenID authentication --> 
+  <servlet>
+      <servlet-name>OpenIDConsumerServlet</servlet-name>
+      <servlet-class>org.exoplatform.openid.servlet.OpenIDConsumerServlet</servlet-class>
+   </servlet>
+   <servlet>
+      <servlet-name>OpenIDAccountServlet</servlet-name>
+      <servlet-class>org.exoplatform.openid.servlet.OpenIDAccountServlet</servlet-class>
+   </servlet>
+  
 	<!--  =================================================================  -->
 	<servlet-mapping>
 	  <servlet-name>InitiateLoginServlet</servlet-name>
@@ -293,6 +303,15 @@
   <servlet-mapping>
     <servlet-name>GateInServlet</servlet-name>
     <url-pattern>/gateinservlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>OpenIDConsumerServlet</servlet-name>
+    <url-pattern>/openidconsumer</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OpenIDAccountServlet</servlet-name>
+    <url-pattern>/openidaccount</url-pattern>
   </servlet-mapping>
 
   <!-- The Welcome File List for IBM WebSphere -->

@@ -25,6 +25,7 @@
 							<div class="RightLoginContainer">
 								<div class="MiddleLoginContainer Signin">
 									<a class="Login" onclick="$signInAction"><%=_ctx.appRes("UILoginForm.label.Signin")%></a>
+									<a class="Login" href="/portal/openidconsumer">OpenId</a>
 									<a class="Register" href="$registerURI">
 										<%=_ctx.appRes("UIBannerPortlet.action.register")%>
 									</a>						

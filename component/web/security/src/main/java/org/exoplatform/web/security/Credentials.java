@@ -29,7 +29,8 @@ import java.io.Serializable;
  */
 public class Credentials implements Serializable
 {
-
+   public static final String GATEIN_AUTH = "gatein";
+   public static final String OPENID_AUTH = "openid";
    
 
    /** . */
@@ -37,6 +38,8 @@ public class Credentials implements Serializable
 
    /** . */
    private final String password;
+   
+   private final String auth_type;
 
    /**
     * Construct a new instance.
@@ -57,6 +60,18 @@ public class Credentials implements Serializable
       }
       this.username = username;
       this.password = password;
+      this.auth_type = GATEIN_AUTH;
+   }
+   
+   public Credentials(String username, String password, String auth_type) throws NullPointerException
+   {
+      if (username == null)
+      {
+         throw new NullPointerException("Username is null");
+      }
+      this.username = username;
+      this.password = password;
+      this.auth_type = auth_type;
    }
 
    /**
@@ -77,5 +92,10 @@ public class Credentials implements Serializable
    public String getPassword()
    {
       return password;
+   }
+   
+   public String getAuthType()
+   {
+      return this.auth_type;
    }
 }

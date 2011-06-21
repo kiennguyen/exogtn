@@ -37,5 +37,6 @@
      <module>server</module>
      <module>resources</module>
      <module>api</module>
+     <module>openid</module>
   </modules>
 </project>

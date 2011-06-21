@@ -135,6 +135,7 @@ public class PortalLoginModule extends AbstractLoginModule
             // Set shared state
             sharedState.put("javax.security.auth.login.name", wc.getUsername());
             sharedState.put("javax.security.auth.login.password", wc.getPassword());
+            sharedState.put("javax.security.auth.login.auth_type", wc.getAuthType());
          }
          return true;
       }

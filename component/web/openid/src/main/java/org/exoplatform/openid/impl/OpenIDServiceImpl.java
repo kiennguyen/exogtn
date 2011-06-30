@@ -29,6 +29,9 @@ import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserHandler;
 import org.exoplatform.services.organization.impl.UserImpl;
+import org.exoplatform.services.security.Credential;
+import org.exoplatform.services.security.PasswordCredential;
+import org.exoplatform.services.security.UsernameCredential;
 
 /**
  * @author <a href="kien.nguyen@exoplatform.com">Kien Nguyen</a>
@@ -38,7 +41,7 @@ public class OpenIDServiceImpl implements OpenIDService
 {
    private final Log log = ExoLogger.getLogger("openid:OpenIDService");
    
-   public OpenIDDAOImpl openIdDao = new OpenIDDAOImpl();
+   public static OpenIDDAOImpl openIdDao = new OpenIDDAOImpl();
    
    public User findUserByOpenID(String openid)
    {
@@ -64,7 +67,8 @@ public class OpenIDServiceImpl implements OpenIDService
       return null;
    }
    
-   public User createUser(User user, String openid) throws Exception {      
+   public User createUser(User user, String openid) throws Exception
+   {      
       //TODO Need implement validator for register input fields
       //Save account into database
       PortalContainer container = OpenIDUtils.getContainer();
@@ -75,9 +79,42 @@ public class OpenIDServiceImpl implements OpenIDService
       userHandler.createUser(user, true);
       end(orgService);
       
-      //Map openID with a user, temporarily saving into memory
-      openIdDao.addOpenID(openid, user.getUserName());
+      this.mapToUser(openid, user.getUserName());
+
       return new UserImpl(user.getUserName());
+   }
+   
+   public String validateUser(Credential[] credentials) throws Exception
+   {
+      String user = null;
+      String password = null;
+      for (Credential cred : credentials)
+      {
+         if (cred instanceof UsernameCredential)
+            user = ((UsernameCredential)cred).getUsername();
+         if (cred instanceof PasswordCredential)
+            password = ((PasswordCredential)cred).getPassword();
+      }
+      if (user == null || password == null)
+         throw new Exception("Username or Password is not defined");
+
+      PortalContainer container = OpenIDUtils.getContainer();
+      OrganizationService orgService = (OrganizationService)container.getComponentInstanceOfType(OrganizationService.class);
+ 
+      begin(orgService);
+      boolean success = orgService.getUserHandler().authenticate(user, password);
+      end(orgService);
+
+      if (!success)
+         throw new Exception("Username and Password is incorrect");
+
+      return user;
+   }
+   
+   public void mapToUser(String openid, String username)
+   {
+      //Map openID with a user, temporarily saving into memory
+      openIdDao.addOpenID(openid, username);
    }
    
    private void begin(OrganizationService orgService) throws Exception

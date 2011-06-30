@@ -18,26 +18,28 @@
  */
 package org.exoplatform.openid.servlet;
 
-import org.exoplatform.openid.OpenIDService;
 import org.exoplatform.openid.OpenIDUtils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.organization.User;
+import org.exoplatform.services.organization.jdbc.UserImpl;
+
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author <a href="kienna@exoplatform.com">Kien Nguyen</a>
+ * @author <a href="kien.nguyen@exoplatform.com">Kien Nguyen</a>
  * @version $Revision$
  */
-public class OpenIDAccountServlet extends HttpServlet
-{
-   private static final long serialVersionUID = -631150770085187794L;
 
-   private final Log log = ExoLogger.getLogger("openid:OpenIDAccountServlet");
+public class OpenIDRegisterServlet extends HttpServlet
+{
+   private static final long serialVersionUID = 1745889612084935901L;
+   private final Log log = ExoLogger.getLogger("openid:OpenIDRegisterServlet");
 
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
    {
@@ -46,42 +48,29 @@ public class OpenIDAccountServlet extends HttpServlet
 
    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
    {
-      if(req.getRemoteUser() != null)
-      {
-         //Authenticated
-         resp.sendRedirect("/portal/private/classic");
-      }
+      //Submit from register.jsp
+      User userData = new UserImpl(req.getParameter("username"));
+      userData.setPassword(req.getParameter("password"));
+      userData.setEmail(req.getParameter("email"));
+      userData.setFirstName(req.getParameter("firstName"));
+      userData.setLastName(req.getParameter("lastName"));
 
-      String identifier = (String)req.getAttribute("identifier");
-      String queryString = req.getQueryString();
-      log.info("Your OpenID: " + identifier + "\nQuery String:" + queryString);
-      
-      if (identifier != null)
+      try
       {
-         OpenIDService service = OpenIDUtils.getOpenIDService();
-         User user = service.findUserByOpenID(identifier);
-         if (user != null)
+         User user = OpenIDUtils.getOpenIDService().createUser(userData, req.getParameter("identifier"));
+         if(user != null)
          {
-            try
-            {
-               //Auto Login
-               log.info("Make auto login");
-               OpenIDUtils.autoLogin(user, req, resp);               
-            }
-            catch (Exception e)
-            {
-               log.error("authentication unsuccessful");
-               e.printStackTrace();
-            }
+            //Auto Login
+            log.info("Make auto login");
+            OpenIDUtils.autoLogin(user, req, resp);
          }
-         else
-         {
-            //ask user create account
-            log.info("Go to register new account");
-            req.setAttribute("identifier", identifier);
-            req.setAttribute("user", user);
-            this.getServletContext().getRequestDispatcher("/login/openid/register.jsp").forward(req, resp);
-         }
+         log.info("Create successfully user: " + user.getUserName());
       }
+      catch (Exception e)
+      {
+         log.error("Cannot create new user: ");
+         e.printStackTrace();
+      }
+      return;
    }
 }

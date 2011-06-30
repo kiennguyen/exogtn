@@ -23,7 +23,7 @@
 			<legend>Sign-in with OpenID</legend>
 			<div id="openid_choice">
 				<p>Please click your account provider:</p>
-				<p><div id="error" style="color: red">${error}</div></p>
+				<p id="error" style="color: red">${error}</p>
 			</div>
 			<div id="openid_input_area">
 				<input id="openid_identifier" name="openid_identifier" type="text" value="http://" />

@@ -20,6 +20,14 @@ package org.exoplatform.openid;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
+import org.exoplatform.services.organization.User;
+import org.exoplatform.web.login.InitiateLoginServlet;
+import org.exoplatform.web.security.Credentials;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author <a href="kienna@exoplatform.com">Kien Nguyen</a>
@@ -30,5 +38,17 @@ public class OpenIDUtils
    public static PortalContainer getContainer()
    {
       return RootContainer.getInstance().getPortalContainer("portal");
+   }
+   
+   public static OpenIDService getOpenIDService()
+   {
+      return (OpenIDService)getContainer().getComponentInstanceOfType(OpenIDService.class);
+   }
+   
+   public static void autoLogin(User user, HttpServletRequest req, HttpServletResponse resp) throws IOException
+   {
+      Credentials credentials = new Credentials(user.getUserName(), user.getPassword(), Credentials.OPENID_AUTH);
+      req.getSession().setAttribute(InitiateLoginServlet.CREDENTIALS, credentials);
+      resp.sendRedirect("/portal/private/classic");
    }
 }

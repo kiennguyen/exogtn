@@ -244,6 +244,14 @@
       <servlet-name>OpenIDAccountServlet</servlet-name>
       <servlet-class>org.exoplatform.openid.servlet.OpenIDAccountServlet</servlet-class>
    </servlet>
+   <servlet>
+      <servlet-name>OpenIDRegisterServlet</servlet-name>
+      <servlet-class>org.exoplatform.openid.servlet.OpenIDRegisterServlet</servlet-class>
+   </servlet>
+   <servlet>
+      <servlet-name>OpenIDMapServlet</servlet-name>
+      <servlet-class>org.exoplatform.openid.servlet.OpenIDMapServlet</servlet-class>
+   </servlet>
   
 	<!--  =================================================================  -->
 	<servlet-mapping>
@@ -312,6 +320,14 @@
   <servlet-mapping>
     <servlet-name>OpenIDAccountServlet</servlet-name>
     <url-pattern>/openidaccount</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OpenIDRegisterServlet</servlet-name>
+    <url-pattern>/openidregister</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OpenIDMapServlet</servlet-name>
+    <url-pattern>/openidmap</url-pattern>
   </servlet-mapping>
 
   <!-- The Welcome File List for IBM WebSphere -->

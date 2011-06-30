@@ -3,10 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>GateIn OpenID Register Account</title>
+    <title>GateIn OpenID Register/Map User</title>
 </head>
 <body>
-  <form name="openid-register-form" action="/portal/openidaccount" method="post" accept-charset="utf-8">
+  <form name="openid-register-form" action="/portal/openidregister" method="post" accept-charset="utf-8" style="border: 1px">
+    <div>
+    	<h2>Register new user and map openID with this user</h2>
+    	<p>You had a GateIn user, using <a href="/portal/login/openid/mapuser.jsp?identifier=${identifier}">map user</a></p>
+    </div>
+    <p id="error" style="color: red">${error}</p>
 		<div id="AccountInputSet" class="UIFormInputSet AccountInputSet">
 			<table class="UIFormGrid">
 				<tbody>
@@ -16,7 +21,7 @@
 					<tr><td class="FieldLabel">First Name:</td><td class="FieldComponent"><input name="firstName" type="text" id="firstName" value="${user.firstName}"> *</td></tr>
 					<tr><td class="FieldLabel">Last Name:</td><td class="FieldComponent"><input name="lastName" type="text" id="lastName" value="${user.lastName}"> *</td></tr>
 					<tr><td class="FieldLabel">Email Address:</td><td class="FieldComponent"><input name="email" type="text" id="email" value="${user.email}"> *</td></tr>
-					<tr><td class="FieldLabel">OpenID Identifier:</td><td class="FieldComponent"><input name="identifier" type="text" id="identifier" value="${identifier}"> *</td></tr>
+					<tr><td class="FieldLabel">OpenID Identifier:</td><td class="FieldComponent"><input name="identifier" type="text" id="identifier" value="${identifier}" readonly="readonly"> *</td></tr>
 				</tbody>
 			</table>
 		</div>

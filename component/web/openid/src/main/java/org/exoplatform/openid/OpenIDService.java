@@ -19,6 +19,7 @@
 package org.exoplatform.openid;
 
 import org.exoplatform.services.organization.User;
+import org.exoplatform.services.security.Credential;
 
 /**
  * @author <a href="kien.nguyen@exoplatform.com">Kien Nguyen</a>
@@ -27,4 +28,7 @@ import org.exoplatform.services.organization.User;
 public interface OpenIDService
 {
    public User findUserByOpenID(String openid);
+   public String validateUser(Credential[] credentials) throws Exception;
+   public User createUser(User user, String openid) throws Exception;
+   public void mapToUser(String openid, String username);
 }

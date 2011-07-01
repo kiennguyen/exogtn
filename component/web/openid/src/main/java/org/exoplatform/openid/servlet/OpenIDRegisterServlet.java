@@ -59,8 +59,9 @@ public class OpenIDRegisterServlet extends HttpServlet
       if (tCredentials == null)
       {
          PrintWriter out = resp.getWriter();
-         out.println("You don't have permission");
+         out.println("You don't have permission to view this servlet");
          out.close();
+         return;
       }
       
       //Submit from register.jsp

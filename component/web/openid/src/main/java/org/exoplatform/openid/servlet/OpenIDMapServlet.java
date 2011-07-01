@@ -21,6 +21,7 @@ package org.exoplatform.openid.servlet;
 import org.exoplatform.openid.OpenIDUtils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
+import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.impl.UserImpl;
 import org.exoplatform.services.security.Authenticator;
 import org.exoplatform.services.security.Credential;
@@ -61,8 +62,9 @@ public class OpenIDMapServlet extends HttpServlet
       if (tCredentials == null)
       {
          PrintWriter out = resp.getWriter();
-         out.println("You don't have permission");
+         out.println("You don't have permission to view this servlet");
          out.close();
+         return;
       }
       
       //Submit from register.jsp
@@ -92,14 +94,16 @@ public class OpenIDMapServlet extends HttpServlet
          OpenIDUtils.getOpenIDService().mapToUser(identifier, userId);
          
          //Auto login
-         OpenIDUtils.autoLogin(new UserImpl(userId), req, resp);
+         User user = new UserImpl(userId);
+         user.setPassword(token);
+         OpenIDUtils.autoLogin(user, req, resp);
       }
       catch (Exception e)
       {
          log.error("Username or Password is invalid: " + e.getMessage());
          
          //Go back to mapuser screen
-         req.setAttribute("error", e.getMessage());
+         req.setAttribute("error", "Username or Password is invalid");
          this.getServletContext().getRequestDispatcher("/login/openid/mapuser.jsp").include(req, resp);
       }
       return;

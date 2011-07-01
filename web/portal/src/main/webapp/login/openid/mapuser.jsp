@@ -7,7 +7,7 @@
 </head>
 <body>
 	<form name="openid-map-form" action="/portal/openidmap" style="border: 1px">
-		<div><h2>Map with existing account</h2></div>
+		<div><h2>Map with existing user</h2></div>
 		<div id="error" style="color: red"><p>${error}</p></div>
 		<div id="AccountInputSet" class="UIFormInputSet AccountInputSet">
 			<table class="UIFormGrid">

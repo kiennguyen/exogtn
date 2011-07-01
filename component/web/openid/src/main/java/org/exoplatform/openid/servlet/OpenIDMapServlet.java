@@ -26,8 +26,12 @@ import org.exoplatform.services.security.Authenticator;
 import org.exoplatform.services.security.Credential;
 import org.exoplatform.services.security.PasswordCredential;
 import org.exoplatform.services.security.UsernameCredential;
+import org.exoplatform.web.security.Credentials;
+import org.exoplatform.web.security.security.AbstractTokenService;
+import org.exoplatform.web.security.security.TransientTokenService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -50,6 +54,17 @@ public class OpenIDMapServlet extends HttpServlet
 
    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
    {
+      String token = (String)req.getSession().getAttribute("openid.token");
+      TransientTokenService tokenService = AbstractTokenService.getInstance(TransientTokenService.class);
+      Credentials tCredentials = tokenService.validateToken(token, false);
+
+      if (tCredentials == null)
+      {
+         PrintWriter out = resp.getWriter();
+         out.println("You don't have permission");
+         out.close();
+      }
+      
       //Submit from register.jsp
       String username = req.getParameter("username");
       String password = req.getParameter("password");
@@ -85,7 +100,7 @@ public class OpenIDMapServlet extends HttpServlet
          
          //Go back to mapuser screen
          req.setAttribute("error", e.getMessage());
-         this.getServletContext().getRequestDispatcher("/login/openid/mapuser.jsp").forward(req, resp);
+         this.getServletContext().getRequestDispatcher("/login/openid/mapuser.jsp").include(req, resp);
       }
       return;
    }

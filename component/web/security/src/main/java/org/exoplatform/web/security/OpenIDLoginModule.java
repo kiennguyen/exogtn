@@ -18,11 +18,14 @@
  */
 package org.exoplatform.web.security;
 
+import org.exoplatform.container.ExoContainer;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.security.Authenticator;
 import org.exoplatform.services.security.UsernameCredential;
 import org.exoplatform.services.security.jaas.DefaultLoginModule;
+import org.exoplatform.web.security.security.TransientTokenService;
+
 import javax.security.auth.login.LoginException;
 
 /**
@@ -52,13 +55,22 @@ public class OpenIDLoginModule extends DefaultLoginModule
          }
          
          String username = (String)sharedState.get("javax.security.auth.login.name");
-      
-         if (username == null)
+         String password = (String)sharedState.get("javax.security.auth.login.password");
+         if (username == null || password == null)
          {
               log.error("OpenID Login Failed. Credential Not Found!!");
               return false;
          }
             
+         //Check token
+         ExoContainer container = getContainer();
+         Object o = ((TransientTokenService)container.getComponentInstanceOfType(TransientTokenService.class)).validateToken(password, true);
+         if (o == null)
+         {
+            log.error("OpenID Login Failed. Credential Not Found!!");
+            return false;
+         }
+         
          Authenticator authenticator = (Authenticator) getContainer()
                .getComponentInstanceOfType(Authenticator.class);
    
@@ -69,8 +81,12 @@ public class OpenIDLoginModule extends DefaultLoginModule
    
          identity = authenticator.createIdentity(username);
          sharedState.put("exo.security.identity", identity);
-         sharedState.put("javax.security.auth.login.name", username);
          subject.getPublicCredentials().add(new UsernameCredential(username));
+
+         //Temporarily reset username and password from sharedState to pass SharedStateLoginModule
+         //TODO need checking auth_type in ShareStateLoginModule to have validate appropriately
+         sharedState.put("javax.security.auth.login.name", null);
+         sharedState.put("javax.security.auth.login.password", null);
          
          return true;
       }

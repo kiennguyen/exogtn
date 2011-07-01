@@ -23,7 +23,13 @@ import org.exoplatform.openid.OpenIDUtils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.organization.User;
+import org.exoplatform.web.security.Credentials;
+import org.exoplatform.web.security.security.AbstractTokenService;
+import org.exoplatform.web.security.security.TransientTokenService;
+
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,13 +57,14 @@ public class OpenIDAccountServlet extends HttpServlet
          //Authenticated
          resp.sendRedirect("/portal/private/classic");
       }
-
-      String identifier = (String)req.getAttribute("identifier");
-      String queryString = req.getQueryString();
-      log.info("Your OpenID: " + identifier + "\nQuery String:" + queryString);
       
-      if (identifier != null)
+      String token = (String)req.getSession().getAttribute("openid.token");
+      TransientTokenService tokenService = AbstractTokenService.getInstance(TransientTokenService.class);
+      Credentials tCredentials = tokenService.validateToken(token, false);
+
+      if (tCredentials != null)
       {
+         String identifier = tCredentials.getUsername();
          OpenIDService service = OpenIDUtils.getOpenIDService();
          User user = service.findUserByOpenID(identifier);
          if (user != null)
@@ -66,6 +73,7 @@ public class OpenIDAccountServlet extends HttpServlet
             {
                //Auto Login
                log.info("Make auto login");
+               user.setPassword(token);
                OpenIDUtils.autoLogin(user, req, resp);               
             }
             catch (Exception e)
@@ -80,8 +88,14 @@ public class OpenIDAccountServlet extends HttpServlet
             log.info("Go to register new account");
             req.setAttribute("identifier", identifier);
             req.setAttribute("user", user);
-            this.getServletContext().getRequestDispatcher("/login/openid/register.jsp").forward(req, resp);
+            this.getServletContext().getRequestDispatcher("/login/openid/register.jsp").include(req, resp);
          }
+      }
+      else
+      {
+         PrintWriter out = resp.getWriter();
+         out.println("You don't have permission");
+         out.close();
       }
    }
 }

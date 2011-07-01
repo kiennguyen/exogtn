@@ -31,7 +31,6 @@ public class Credentials implements Serializable
 {
    public static final String GATEIN_AUTH = "gatein";
    public static final String OPENID_AUTH = "openid";
-   
 
    /** . */
    private final String username;
@@ -63,15 +62,26 @@ public class Credentials implements Serializable
       this.auth_type = GATEIN_AUTH;
    }
    
+   /**
+    * Support authentication type such as openid
+    * @param username
+    * @param password
+    * @param auth_type
+    * @throws NullPointerException
+    */
    public Credentials(String username, String password, String auth_type) throws NullPointerException
    {
       if (username == null)
       {
          throw new NullPointerException("Username is null");
       }
+      if (password == null)
+      {
+         throw new NullPointerException("Password is null");
+      }
       this.username = username;
       this.password = password;
-      this.auth_type = auth_type;
+      this.auth_type = (auth_type != null) ? auth_type : GATEIN_AUTH;
    }
 
    /**

@@ -20,6 +20,9 @@ package org.exoplatform.openid.servlet;
 
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
+import org.exoplatform.web.security.Credentials;
+import org.exoplatform.web.security.security.AbstractTokenService;
+import org.exoplatform.web.security.security.TransientTokenService;
 import org.openid4java.OpenIDException;
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
@@ -131,16 +134,16 @@ public class OpenIDConsumerServlet extends HttpServlet
 
    private void processReturn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
    {
-      Identifier identifier = this.verifyResponse(req);
-      log.debug("identifier: " + identifier);
-      if (identifier == null)
+      String token = this.verifyResponse(req);
+
+      if (token == null)
       {
-         req.setAttribute("error", "There is no identifier in response from provider");
+         req.setAttribute("error", "There is error during login processing");
          this.getServletContext().getRequestDispatcher("/login/openid/openid.jsp").forward(req, resp);
       }
       else
       {
-         req.setAttribute("identifier", identifier.getIdentifier());
+         req.getSession().setAttribute("openid.token", token);
          this.getServletContext().getRequestDispatcher("/openidaccount").forward(req, resp);
       }
    }
@@ -197,8 +200,12 @@ public class OpenIDConsumerServlet extends HttpServlet
       return null;
    }
 
-   // --- processing the authentication response ---
-   public Identifier verifyResponse(HttpServletRequest httpReq)
+   /**
+    * Verify the authentication response
+    * @param httpReq
+    * @return token if response passed verifying, whereas return null
+    */
+   public String verifyResponse(HttpServletRequest httpReq)
    {
       try
       {
@@ -241,12 +248,18 @@ public class OpenIDConsumerServlet extends HttpServlet
                }
             }
 
-            return verified; // success
+            log.info("Your OpenID: " + verified.getIdentifier() + "\nQuery String:" + httpReq.getQueryString());
+            
+            //We need to store information into token for security purpose
+            TransientTokenService tokenService = AbstractTokenService.getInstance(TransientTokenService.class);
+            Credentials credentials = new Credentials(verified.getIdentifier(), authSuccess.getSignature());
+            return tokenService.createToken(credentials); // success
          }
       }
       catch (OpenIDException e)
       {
          // present error to the user
+         log.error("Failure to verify Authentication Response, re-login to avoid security problem");
       }
 
       return null;

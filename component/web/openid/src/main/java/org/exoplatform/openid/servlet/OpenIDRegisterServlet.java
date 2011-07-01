@@ -23,8 +23,12 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.jdbc.UserImpl;
+import org.exoplatform.web.security.Credentials;
+import org.exoplatform.web.security.security.AbstractTokenService;
+import org.exoplatform.web.security.security.TransientTokenService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,6 +52,17 @@ public class OpenIDRegisterServlet extends HttpServlet
 
    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
    {
+      String token = (String)req.getSession().getAttribute("openid.token");
+      TransientTokenService tokenService = AbstractTokenService.getInstance(TransientTokenService.class);
+      Credentials tCredentials = tokenService.validateToken(token, false);
+
+      if (tCredentials == null)
+      {
+         PrintWriter out = resp.getWriter();
+         out.println("You don't have permission");
+         out.close();
+      }
+      
       //Submit from register.jsp
       User userData = new UserImpl(req.getParameter("username"));
       userData.setPassword(req.getParameter("password"));
@@ -62,6 +77,7 @@ public class OpenIDRegisterServlet extends HttpServlet
          {
             //Auto Login
             log.info("Make auto login");
+            user.setPassword(token);
             OpenIDUtils.autoLogin(user, req, resp);
          }
          log.info("Create successfully user: " + user.getUserName());

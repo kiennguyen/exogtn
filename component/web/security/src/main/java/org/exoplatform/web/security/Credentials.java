@@ -49,17 +49,7 @@ public class Credentials implements Serializable
     */
    public Credentials(String username, String password) throws NullPointerException
    {
-      if (username == null)
-      {
-         throw new NullPointerException("Username is null");
-      }
-      if (password == null)
-      {
-         throw new NullPointerException("Password is null");
-      }
-      this.username = username;
-      this.password = password;
-      this.auth_type = GATEIN_AUTH;
+      this(username, password, GATEIN_AUTH);
    }
    
    /**

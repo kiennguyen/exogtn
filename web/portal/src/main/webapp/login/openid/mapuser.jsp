@@ -13,7 +13,7 @@
 			<table class="UIFormGrid">
 				<tbody>
 					<tr><td class="FieldLabel">User Name:</td><td class="FieldComponent"><input name="username" type="text" id="username" value=""> *</td></tr>
-					<tr><td class="FieldLabel">Password:</td><td class="FieldComponent"><input name="password" type="text" id="password" value=""> *</td></tr>
+					<tr><td class="FieldLabel">Password:</td><td class="FieldComponent"><input name="password" type="password" id="password" value=""> *</td></tr>
 					<tr><td class="FieldLabel">OpenID Identifier:</td><td class="FieldComponent"><input name="identifier" type="text" id="identifier" value="<%=request.getParameter("identifier") %>" readonly="readonly"> *</td></tr>
 				</tbody>
 			</table>

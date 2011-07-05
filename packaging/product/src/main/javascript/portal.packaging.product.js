@@ -47,7 +47,6 @@ function getProduct(version) {
   product.addDependencies(portal.web.portal) ;
   product.addDependencies(portal.sample.extension) ;
 
-  product.addDependencies(portal.web.openid);
 
   product.addDependencies(portal.ibm.jdk.support);
 

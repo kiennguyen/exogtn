@@ -119,11 +119,6 @@ function getModule(params)
    module.component.web.api =
    new Project("org.exoplatform.portal", "exo.portal.component.web.api", "jar", module.version);
 
-   module.component.web.openid = 
-   new Project("org.exoplatform.portal", "exo.portal.component.web.openid", "jar", module.version).
-      addDependency(new Project("org.openid4java", "openid4java-nodeps", "jar", "0.9.5")).
-      addDependency(new Project("javax.servlet", "jstl", "jar", "1.2"));
-
    module.component.portal =
    new Project("org.exoplatform.portal", "exo.portal.component.portal", "jar", module.version).
       addDependency(new Project("org.gatein.mop", "mop-api", "jar", mopVersion)).
@@ -141,8 +136,8 @@ function getModule(params)
       addDependency(new Project("org.reflext", "reflext.spi", "jar", reflectVersion)).
       addDependency(new Project("org.reflext", "reflext.jlr", "jar", reflectVersion)).
       addDependency(new Project("org.reflext", "reflext.api", "jar", reflectVersion)).
-      addDependency(module.component.web.security);
-
+      addDependency(module.component.web.security).
+      addDependency(new Project("org.openid4java", "openid4java-nodeps", "jar", "0.9.5"));
    module.component.identity =
    new Project("org.exoplatform.portal", "exo.portal.component.identity", "jar", module.version).
       addDependency(new Project("org.picketlink.idm", "picketlink-idm-core", "jar", idmVersion)).
@@ -164,8 +159,7 @@ function getModule(params)
       addDependency(module.component.web.security).
       addDependency(module.component.web.api).
       addDependency(module.component.web.resources).
-      addDependency(module.component.web.controller).
-      addDependency(module.component.web.openid);
+      addDependency(module.component.web.controller);
 
    module.webui.portlet =
    new Project("org.exoplatform.portal", "exo.portal.webui.portlet", "jar", module.version).
@@ -274,9 +268,7 @@ function getModule(params)
    new Project("org.exoplatform.portal", "exo.portal.web.portal", "exo-portal", module.version).
       addDependency(jcr.frameworks.web).
       addDependency(jcr.frameworks.command);
-   
-   module.web.openid = 
-   new Project("org.exoplatform.portal", "exo.portal.web.openid", "war", module.version);
+
 
    module.server = {}
 

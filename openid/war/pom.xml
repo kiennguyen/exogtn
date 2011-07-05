@@ -19,25 +19,36 @@
 
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-   <modelVersion>4.0.0</modelVersion>
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
    <parent>
       <groupId>org.exoplatform.portal</groupId>
       <artifactId>exo.portal.parent</artifactId>
       <version>3.2.0-PLF-Beta2</version>
+      <relativePath>../../../pom.xml</relativePath>
    </parent>
 
-   <artifactId>exo.portal.web</artifactId>
-   <packaging>pom</packaging>
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>exo.portal.openid.extension.war</artifactId>
+   <packaging>war</packaging>
+   <name>GateIn Portal OpenID Extension War</name>
+   <url>http://www.exoplatform.org</url>
+   <description>GateIn OpenID Extension War</description>
 
-   <name>GateIn Portal Portlet</name>
+   <build>
+      <finalName>openid</finalName>
+   </build>
 
-   <modules>
-      <module>eXoResources</module>
-      <module>portal</module>
-      <module>rest</module>
-   </modules>
-
+   <dependencies>
+      <dependency>
+         <groupId>taglibs</groupId>
+         <artifactId>standard</artifactId>
+         <version>1.1.2</version>
+      </dependency>
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>jstl</artifactId>
+         <version>1.1.2</version>
+      </dependency>
+   </dependencies>
 </project>

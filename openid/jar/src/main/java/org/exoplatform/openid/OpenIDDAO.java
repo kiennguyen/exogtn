@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2011 eXo Platform SAS.
- *
+ * 
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1 of
@@ -16,32 +16,21 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.exoplatform.openid.impl;
+package org.exoplatform.openid;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
- * @author <a href="kienna@exoplatform.com">Kien Nguyen</a>
- * @version $Revision$
+ * @author <a href="mailto:ndkhoi168@gmail.com">Nguyen Duc Khoi</a>
+ * Jul 5, 2011
  */
-public class OpenIDDAOImpl
+public interface OpenIDDAO
 {
-   //TODO Should get from database. instead of caching this list
-   //Map<String, String> means Map<openid, username>
-   private static Map<String, String> openidDatabase = new HashMap<String, String>();
+   public String getUser(String openId);
    
-   public String getUser(String openid)
-   {
-      return openidDatabase.get(openid);
-   }
+   public void addOpenID(String openId, String username);
    
-   /**
-    * Add to OpenID table, map with existing user by username
-    * @return
-    */
-   public void addOpenID(String openid, String username)
-   {
-      openidDatabase.put(openid, username);
-   }
+   public void removeOpenId(String openId);
+   
+   public List<String> getOpenIds(String username);
 }

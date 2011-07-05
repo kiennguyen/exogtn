@@ -21,6 +21,8 @@ package org.exoplatform.openid;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.security.Credential;
 
+import java.util.List;
+
 /**
  * @author <a href="kien.nguyen@exoplatform.com">Kien Nguyen</a>
  * @version $Revision$
@@ -28,7 +30,9 @@ import org.exoplatform.services.security.Credential;
 public interface OpenIDService
 {
    public User findUserByOpenID(String openid);
+   public List<String> findOpenIdsByUser(String username);
    public String validateUser(Credential[] credentials) throws Exception;
    public User createUser(User user, String openid) throws Exception;
-   public void mapToUser(String openid, String username);
+   public void mapToUser(String openId, String username);
+   public void removeOpenID(String openId);
 }

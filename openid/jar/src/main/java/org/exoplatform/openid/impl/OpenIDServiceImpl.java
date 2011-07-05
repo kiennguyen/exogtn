@@ -21,6 +21,7 @@ package org.exoplatform.openid.impl;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.component.ComponentRequestLifecycle;
 import org.exoplatform.container.component.RequestLifeCycle;
+import org.exoplatform.openid.OpenIDDAO;
 import org.exoplatform.openid.OpenIDService;
 import org.exoplatform.openid.OpenIDUtils;
 import org.exoplatform.services.log.ExoLogger;
@@ -33,6 +34,8 @@ import org.exoplatform.services.security.Credential;
 import org.exoplatform.services.security.PasswordCredential;
 import org.exoplatform.services.security.UsernameCredential;
 
+import java.util.List;
+
 /**
  * @author <a href="kien.nguyen@exoplatform.com">Kien Nguyen</a>
  * @version $Revision$
@@ -41,7 +44,12 @@ public class OpenIDServiceImpl implements OpenIDService
 {
    private final Log log = ExoLogger.getLogger("openid:OpenIDService");
    
-   public static OpenIDDAOImpl openIdDao = new OpenIDDAOImpl();
+   public OpenIDDAO openIdDao;
+   
+   public OpenIDServiceImpl(OpenIDDAO openIDDAO)
+   {
+      openIdDao = openIDDAO;
+   }
    
    public User findUserByOpenID(String openid)
    {
@@ -117,6 +125,18 @@ public class OpenIDServiceImpl implements OpenIDService
       openIdDao.addOpenID(openid, username);
    }
    
+   @Override
+   public void removeOpenID(String openId)
+   {
+      openIdDao.removeOpenId(openId);
+   }
+   
+   @Override
+   public List<String> findOpenIdsByUser(String username)
+   {
+      return openIdDao.getOpenIds(username);
+   }
+
    private void begin(OrganizationService orgService) throws Exception
    {
       if (orgService instanceof ComponentRequestLifecycle)
@@ -132,4 +152,5 @@ public class OpenIDServiceImpl implements OpenIDService
           RequestLifeCycle.end();
       }
    }
+
 }

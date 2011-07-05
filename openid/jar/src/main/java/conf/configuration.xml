@@ -25,9 +25,13 @@
    xsi:schemaLocation="http://www.exoplaform.org/xml/ns/kernel_1_1.xsd http://www.exoplaform.org/xml/ns/kernel_1_1.xsd"
    xmlns="http://www.exoplaform.org/xml/ns/kernel_1_1.xsd">
 
-  <component>
-    <key>org.exoplatform.openid.OpenIDService</key>
-    <type>org.exoplatform.openid.impl.OpenIDServiceImpl</type>
-  </component>
-
+   <component>
+      <key>org.exoplatform.openid.OpenIDService</key>
+      <type>org.exoplatform.openid.impl.OpenIDServiceImpl</type>
+   </component>
+   
+   <component>
+      <key>org.exoplatform.openid.OpenIDDAO</key>
+      <type>org.exoplatform.openid.impl.OpenIDDAOMemoryImpl</type>
+   </component>
 </configuration>

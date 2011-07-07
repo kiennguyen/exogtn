@@ -46,6 +46,11 @@ function getProduct(version) {
 
   product.addDependencies(portal.web.portal) ;
   product.addDependencies(portal.sample.extension) ;
+  product.addDependencies(portal.extension.openid.war) ;
+  portal.starter = new Project("org.exoplatform.portal", "exo.portal.starter.war", "war", portal.version);
+  portal.starter.deployName = "starter";
+
+  product.addDependencies(portal.starter);
 
 
   product.addDependencies(portal.ibm.jdk.support);

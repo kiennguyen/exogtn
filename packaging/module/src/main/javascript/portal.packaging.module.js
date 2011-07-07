@@ -269,6 +269,20 @@ function getModule(params)
       addDependency(jcr.frameworks.web).
       addDependency(jcr.frameworks.command);
 
+   module.extension = {}
+   module.extension.openid = {}
+
+   module.extension.openid.portlet =
+   new Project("org.exoplatform.portal", "exo.portal.openid.extension.portlet", "war", module.version);
+   module.extension.openid.portlet.deployName="openid-portlet"
+
+   module.extension.openid.war =
+   new Project("org.exoplatform.portal", "exo.portal.openid.extension.war", "war", module.version).
+      addDependency(module.extension.openid.portlet).
+      addDependency(new Project("org.exoplatform.portal", "exo.portal.openid.config", "jar", module.version)).
+      addDependency(new Project("org.exoplatform.portal", "exo.portal.openid.extension.jar", "jar", module.version));
+   module.extension.openid.war.deployName="openid"
+
 
    module.server = {}
 

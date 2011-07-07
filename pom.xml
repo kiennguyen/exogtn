@@ -122,6 +122,7 @@
       <module>examples</module>
       <module>starter</module>
       <module>packaging</module>
+      <module>openid</module>
       <module>testsuite</module>
   </modules>
 

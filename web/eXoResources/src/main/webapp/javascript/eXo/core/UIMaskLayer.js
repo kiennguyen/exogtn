@@ -64,8 +64,6 @@ UIMaskLayer.prototype.showAjaxLoading = function(mask){
 	var ajaxLoading = document.getElementById("AjaxLoadingMask");
 	ajaxLoading.style.top = document.documentElement.scrollTop + "px";
 	ajaxLoading.style.display = "block";
-	eXo.core.Browser.setOpacity(mask,30);
-	mask.style.backgroundColor = "black";	
 }
  
 /**

@@ -77,13 +77,15 @@ public class
       throws ContainerConfigException
    {
       super(s, expressions);
-
+	
       // This ensures RootContainer initialized first
       // to populate properties in configuration.properties into PropertyManager
       RootContainer.getInstance();
       
       initializeTokenKeyFile();
       initializeSigningKeyFile();
+
+System.out.println("heeeee");
    }
    
    private void initializeTokenKeyFile()

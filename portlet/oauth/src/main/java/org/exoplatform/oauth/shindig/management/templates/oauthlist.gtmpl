@@ -1,0 +1,44 @@
+#{param name=allConsumers/}
+
+<div class="OAuthConsumer">
+	<div><h1>
+	Shindig OAuth Store: Manage mappings of gadget and OAuth key</h1></div>
+	<div>
+	<% if(allConsumers != null) { %>
+		<table border="1">
+			<tr bgcolor="#99CCFF">
+				<td valign="top"><b>Gadget Uri</b></td>
+				<td valign="top"><b>Key Name</b></td>
+				<td valign="top"><b>Consumer Key</b></td>
+				<td valign="top"><b>Consumer Secret</b></td>
+				<td valign="top"><b>Key Type</b></td>
+				<td valign="top"><b>Action</b></td>
+			</tr>
+			 <% for (def consumer : allConsumers) { %>
+				<tr>
+					<td>
+					<% for (def uri : consumer.gadgetUris) {%>
+						  <div>${uri}\n</div>
+					<% } %>
+					
+					</td>
+					<td><a href="@{UIShindigOAuth.showConsumerDetail(keyName =  consumer.keyName)}">${consumer.keyName}</a></td>
+					<td>${consumer.consumerKey}</td>
+					<td>${consumer.consumerSecret}</td>
+					<td>${consumer.keyType}</td>
+					<td>
+					    <p>
+					    	<a href="@{UIShindigOAuth.deleteConsumer(keyName = consumer.keyName)}" title="Delete this consumer">Delete</a>
+    					</p>
+					</td>
+				</tr>
+			<% } %>
+		</table>
+	<% } %>
+	<br />
+	    <p>
+    		<a class="OSummit" href="@{UIShindigOAuth.showAddNewConsumer()}">Add Consumer</a>
+    		<a class="OSummit" href="@{UIShindigOAuth.showAddMapping()}">Add Mapping</a>
+		</p>
+	</div>
+</div>

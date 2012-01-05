@@ -24,21 +24,13 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shindig.auth.AnonymousAuthenticationHandler;
 import org.apache.shindig.common.crypto.BlobCrypter;
-import org.apache.shindig.common.util.ResourceLoader;
 import org.apache.shindig.config.ContainerConfig;
-import org.apache.shindig.gadgets.oauth.BasicOAuthStore;
-import org.apache.shindig.gadgets.oauth.BasicOAuthStoreConsumerKeyAndSecret;
-import org.apache.shindig.gadgets.oauth.BasicOAuthStoreConsumerKeyAndSecret.KeyType;
 import org.apache.shindig.gadgets.oauth.OAuthFetcherConfig;
 import org.apache.shindig.gadgets.oauth.OAuthModule;
 import org.apache.shindig.gadgets.oauth.OAuthRequest;
 import org.apache.shindig.gadgets.oauth.OAuthStore;
-import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.services.log.Log;
 
 /**
  * Created by IntelliJ IDEA.
@@ -54,10 +46,6 @@ public class ExoOAuthModule extends OAuthModule
    private static final String SIGNING_KEY_NAME = "gadgets.signingKeyName";
 
    private static final String CALLBACK_URL = "gadgets.signing.global-callback-url";
-   
-   private static final String OAUTH_CONFIG = "config/oauth.json";
-   
-   private static final Log log = ExoLogger.getLogger(OAuthModule.class);;
 
    @Override
    protected void configure()
@@ -84,52 +72,10 @@ public class ExoOAuthModule extends OAuthModule
      @Inject
       public ExoOAuthStoreProvider(ContainerConfig config)
       {
-         store = new ExoOAuthStore();
-         
          String signingKeyFile = config.getString(ContainerConfig.DEFAULT_CONTAINER, SIGNING_KEY_FILE);
-         String signingKeyName = config.getString(ContainerConfig.DEFAULT_CONTAINER, SIGNING_KEY_NAME);
-         loadDefaultKey(signingKeyFile, signingKeyName);
-         
+         String signingKeyName = config.getString(ContainerConfig.DEFAULT_CONTAINER, SIGNING_KEY_NAME);         
          String defaultCallbackUrl = config.getString(ContainerConfig.DEFAULT_CONTAINER,CALLBACK_URL);
-         store.setDefaultCallbackUrl(defaultCallbackUrl);
-         loadConsumers();
-      }
-      
-
-
-      private void loadDefaultKey(String signingKeyFile, String signingKeyName) {
-        BasicOAuthStoreConsumerKeyAndSecret key = null;
-        if (!StringUtils.isBlank(signingKeyFile)) {
-          try {
-            log.info("Loading OAuth signing key from " + signingKeyFile);
-            String privateKey = IOUtils.toString(ResourceLoader.open(signingKeyFile), "UTF-8");
-            privateKey = BasicOAuthStore.convertFromOpenSsl(privateKey);
-            key = new BasicOAuthStoreConsumerKeyAndSecret(null, privateKey, KeyType.RSA_PRIVATE,
-                signingKeyName, null);
-          } catch (Throwable t) {
-            log.warn("Couldn't load key file " + signingKeyFile);
-          }
-        }
-        if (key != null) {
-          store.setDefaultKey(key);
-        } else {
-          log.warn("Couldn't load OAuth signing key.  To create a key, run:\n" +
-              "  openssl req -newkey rsa:1024 -days 365 -nodes -x509 -keyout testkey.pem \\\n" +
-              "     -out testkey.pem -subj '/CN=mytestkey'\n" +
-              "  openssl pkcs8 -in testkey.pem -out oauthkey.pem -topk8 -nocrypt -outform PEM\n" +
-              '\n' +
-              "Then edit gadgets.properties and add these lines:\n" +
-              SIGNING_KEY_FILE + "=<path-to-oauthkey.pem>\n");
-        }
-      }
-
-      private void loadConsumers() {
-        try {
-          String oauthConfigString = ResourceLoader.getContent(OAUTH_CONFIG);
-          store.initFromConfigString(oauthConfigString);
-        } catch (Throwable t) {
-          log.warn("Failed to initialize OAuth consumers from " + OAUTH_CONFIG, t);
-        }
+         store = new ExoOAuthStore(signingKeyFile, signingKeyName, defaultCallbackUrl);
       }
 
       public OAuthStore get() {

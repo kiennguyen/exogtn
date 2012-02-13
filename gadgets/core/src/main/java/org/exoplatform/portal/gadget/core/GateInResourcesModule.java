@@ -18,32 +18,40 @@
  */
 package org.exoplatform.portal.gadget.core;
 
-import org.apache.shindig.common.xml.DomUtil;
-import org.apache.shindig.gadgets.Gadget;
 import org.apache.shindig.gadgets.rewrite.GadgetRewriter;
-import org.apache.shindig.gadgets.rewrite.MutableContent;
-import org.apache.shindig.gadgets.rewrite.RewritingException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+
+import com.google.inject.AbstractModule;
+
+import com.google.inject.multibindings.Multibinder;
+import com.google.inject.name.Names;
 
 /**
  * @author <a href="kienna@exoplatform.com">Kien Nguyen</a>
  * @version $Revision$
  */
-public class ExtraFeaturesRewriter implements GadgetRewriter
+public class GateInResourcesModule extends AbstractModule
 {
-   public void rewrite(Gadget gadget, MutableContent content) throws RewritingException
+   @Override
+   protected void configure()
    {
-      if(gadget.getAllFeatures().contains("exo-jquery"))
-      {
-         Document doc = content.getDocument();
-         Element head = (Element) DomUtil.getFirstNamedChildNode(doc.getDocumentElement(), "head");
-         Element script = head.getOwnerDocument().createElement("script");
-         
-         //TODO should use configurable mechanism and resource controller for URL of exo-jquery feature
-         script.setAttribute("src", "http://localhost:8080/eXoResources/javascript/jquery.js");
-         head.appendChild(script);
-      }
-      
+      configureGateInFeatures();
+      configureGateInFeaturesRewriter();
+   }
+   
+   /**
+    * Adds the gatein-features directory to the FeatureRegistry
+    */
+   protected void configureGateInFeatures() {
+     Multibinder<String> featureBinder = Multibinder.newSetBinder(binder(), String.class, Names.named("org.apache.shindig.features-extended")); 
+     featureBinder.addBinding().toInstance("res://gatein-features/features.txt");
+   }
+   
+   /**
+    * Adds the rewriter to process gatein resources
+    */
+   private void configureGateInFeaturesRewriter()
+   {
+      Multibinder<GadgetRewriter> rewriterbinder = Multibinder.newSetBinder(binder(), GadgetRewriter.class, Names.named("shindig.rewriters.gadget"));       
+      rewriterbinder.addBinding().to(GateInResourcesRewriter.class);
    }
 }

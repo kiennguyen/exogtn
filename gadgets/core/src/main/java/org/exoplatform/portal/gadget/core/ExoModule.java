@@ -54,15 +54,5 @@ public class ExoModule extends AbstractModule
       bind(BeanConverter.class).annotatedWith(Names.named("shindig.bean.converter.xml")).to(BeanXmlConverter.class);
       bind(BeanConverter.class).annotatedWith(Names.named("shindig.bean.converter.json")).to(BeanJsonConverter.class);
       bind(BeanConverter.class).annotatedWith(Names.named("shindig.bean.converter.atom")).to(BeanAtomConverter.class);
-      
-      configureExoFeatures();
-   }
-   
-   /**
-    * Adds the exo-features directory to the FeatureRegistry
-    */
-   protected void configureExoFeatures() {
-     Multibinder<String> featureBinder = Multibinder.newSetBinder(binder(), String.class, Names.named("org.apache.shindig.features-extended")); 
-     featureBinder.addBinding().toInstance("res://exo-features/features.txt");
    }
 }

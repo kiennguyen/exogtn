@@ -43,7 +43,7 @@
       org.exoplatform.portal.gadget.core.GateInResourcesModule
     </param-value>
   </context-param>
-
+  
   <filter>
     <filter-name>authFilter</filter-name>
     <filter-class>org.apache.shindig.auth.AuthenticationServletFilter</filter-class>
@@ -58,6 +58,17 @@
     <filter-name>hostFilter</filter-name>
     <filter-class>org.apache.shindig.common.servlet.HostFilter</filter-class>
   </filter>
+  
+  <filter>
+    <filter-name>GadgetFilter</filter-name>
+    <filter-class>org.exoplatform.portal.gadget.core.GadgetFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>GadgetFilter</filter-name>
+    <url-pattern>/gadgets/*</url-pattern>
+    <url-pattern>/scripts/*</url-pattern>
+  </filter-mapping>
   
   <filter-mapping>
     <filter-name>hostFilter</filter-name>
@@ -93,7 +104,7 @@
     <filter-name>ProxyServletFilter</filter-name>
     <servlet-name>proxy</servlet-name>
   </filter-mapping>
-
+  
   <listener>
     <!--<listener-class>org.apache.shindig.common.servlet.GuiceServletContextListener</listener-class>-->
      <listener-class>org.exoplatform.portal.gadget.core.GateInGuiceServletContextListener</listener-class>

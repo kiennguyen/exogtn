@@ -357,6 +357,14 @@
      </depends>
    </scripts>
 
+   <scripts>
+     <name>jquery</name>
+     <module>
+       <name>jquery</name>
+       <path>/javascript/jquery.js</path>
+     </module>
+   </scripts>
+   
    <!-- Should be lazy loaded -->
    <!-- 
    <javascript>

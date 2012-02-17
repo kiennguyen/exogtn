@@ -25,12 +25,28 @@ import org.apache.shindig.gadgets.rewrite.GadgetRewriter;
 import org.apache.shindig.gadgets.rewrite.MutableContent;
 import org.apache.shindig.gadgets.rewrite.RewritingException;
 import org.apache.shindig.gadgets.spec.Feature;
+import org.exoplatform.commons.utils.PropertyManager;
+import org.exoplatform.container.PortalContainer;
+import org.exoplatform.portal.controller.resource.ResourceId;
+import org.exoplatform.portal.controller.resource.ResourceScope;
+import org.exoplatform.portal.controller.resource.script.FetchMap;
+import org.exoplatform.portal.controller.resource.script.FetchMode;
+import org.exoplatform.portal.controller.resource.script.Module;
+import org.exoplatform.portal.controller.resource.script.ScriptGraph;
+import org.exoplatform.portal.controller.resource.script.ScriptResource;
+import org.exoplatform.web.WebAppController;
+import org.exoplatform.web.application.javascript.JavascriptConfigService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.Locale;
+import java.util.Map;
 
 /**
+ * Look up GateIn resource with given Id and inject resource URL into html header of gadget's content
+ * 
  * @author <a href="kienna@exoplatform.com">Kien Nguyen</a>
  * @version $Revision$
  */
@@ -49,19 +65,37 @@ public class GateInResourcesRewriter implements GadgetRewriter
 
          if (resourceIds.size() > 0)
          {
-            Document doc = content.getDocument();
-            Element head = (Element)DomUtil.getFirstNamedChildNode(doc.getDocumentElement(), "head");
-            Element script = head.getOwnerDocument().createElement("script");
+            JavascriptConfigService service =
+               (JavascriptConfigService)PortalContainer.getInstance().getComponentInstanceOfType(
+                  JavascriptConfigService.class);
+            FetchMap<ResourceId> resourcesMap = new FetchMap<ResourceId>();
+            String resourceUrl = null;
 
-            //TODO should use resource controller for finding resources URL
-            //Temporary hardcode for testing jquery resource
-            if (resourceIds.contains("jquery"))
+            for (String id : resourceIds)
             {
-               String resourceUrl = "http://localhost:8080/eXoResources/javascript/jquery.js";
-               script.setAttribute("src", resourceUrl);
+               resourcesMap.add(new ResourceId(ResourceScope.SHARED, id), FetchMode.IMMEDIATE);
             }
 
-            head.appendChild(script);
+            try
+            {
+               Map<String, FetchMode> resources =
+                  service.resolveURLs(GadgetRequestHandler.getControllerContext(), resourcesMap, !PropertyManager.isDevelopping(),
+                     !PropertyManager.isDevelopping(), new Locale("en"));
+   
+               for (Map.Entry<String, FetchMode> entry : resources.entrySet())
+               {
+                  Document doc = content.getDocument();
+                  Element head = (Element)DomUtil.getFirstNamedChildNode(doc.getDocumentElement(), "head");
+                  Element script = head.getOwnerDocument().createElement("script");
+                  script.setAttribute("src", entry.getKey());
+                  head.appendChild(script);
+               }
+            }
+            catch (IOException e) 
+            {
+               throw new RewritingException("EEEEEEEEEEEEEEEEEErrrorroror",
+                  HttpResponse.SC_INTERNAL_SERVER_ERROR);
+            }
          }
          else
          {
@@ -69,6 +103,5 @@ public class GateInResourcesRewriter implements GadgetRewriter
                HttpResponse.SC_INTERNAL_SERVER_ERROR);
          }
       }
-
    }
 }

@@ -44,6 +44,16 @@
       <value>download</value>
     </route-param>
   </route>
+  
+  <!-- Gadget handler -->
+  <route path="/gadgets/{gtn:path}">
+    <route-param qname="gtn:handler">
+      <value>gadgets</value>
+    </route-param>
+    <path-param qname="gtn:path" encoding="preserve-path">
+       <pattern>.*</pattern>
+    </path-param>
+  </route>
 
   <!-- The legacy route -->
   <route path="/public">
@@ -172,4 +182,5 @@
       <value>default</value>
     </route-param>
   </route> 
+  
 </controller>

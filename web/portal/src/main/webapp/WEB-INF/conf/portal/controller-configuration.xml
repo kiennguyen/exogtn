@@ -130,6 +130,11 @@
           </value-param>
        </init-params>
     </component-plugin>
+    <component-plugin>
+      <name>GadgetRequestHandler</name>
+      <set-method>register</set-method>
+      <type>org.exoplatform.portal.gadget.core.GadgetRequestHandler</type>
+   </component-plugin>    
   </external-component-plugins>
 
 </configuration>

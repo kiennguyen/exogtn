@@ -41,8 +41,7 @@ eXo.gadget.UIGadget = {
 			//eXo.core.Loader.register('eXo.gadgets.Gadgets', '/eXoResources/javascript/eXo/gadget/Gadgets.js');
 			//eXo.core.Loader.register('eXo.gadgets.ExoBasedUserPrefStore', '/eXoResources/javascript/eXo/gadget/ExoBasedUserPrefStore.js');
 		}
-		loader.loadJS([hostName + '/js/pubsub.js?c=1', '/eXoResources/javascript/eXo/gadget/Gadgets.js', 
-		               '/eXoResources/javascript/eXo/gadget/ExoBasedUserPrefStore.js'], eXo.gadget.UIGadget.createCallback, arguments, null);
+		loader.loadJS([hostName + '/js/gadget-container.js?c=1'], eXo.gadget.UIGadget.createCallback, arguments, null);
 		//eXo.core.Loader.init("rpc","eXo.gadgets.Gadgets","eXo.gadgets.ExoBasedUserPrefStore", 
 		//eXo.gadget.UIGadget.createCallback, null, arguments);
 	},

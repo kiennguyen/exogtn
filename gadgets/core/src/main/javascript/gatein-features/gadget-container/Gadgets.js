@@ -21,20 +21,9 @@
  * @fileoverview Open Gadget Container
  */
 var gadgets = gadgets || {};
-gadgets.error = {};
-gadgets.error.SUBCLASS_RESPONSIBILITY = 'subclass responsibility';
-gadgets.error.TO_BE_DONE = 'to be done';
-
-gadgets.log = function(message) {
-  if (window.console && console.log) {
-    console.log(message);
-  } else {
-    var logEntry = document.createElement('div');
-    logEntry.className = 'gadgets-log-entry';
-    logEntry.innerHTML = message;
-    document.body.appendChild(logEntry);
-  }
-};
+gadgets.errors = {};
+gadgets.errors.SUBCLASS_RESPONSIBILITY = 'subclass responsibility';
+gadgets.errors.TO_BE_DONE = 'to be done';
 
 /**
  * Calls an array of asynchronous functions and calls the continuation
@@ -114,7 +103,7 @@ gadgets.UserPrefStore = function() {
  * @return {Object} All user preference of given gadget
  */
 gadgets.UserPrefStore.prototype.getPrefs = function(gadget) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 /**
@@ -123,7 +112,7 @@ gadgets.UserPrefStore.prototype.getPrefs = function(gadget) {
  * @param {Object} prefs User preferences
  */
 gadgets.UserPrefStore.prototype.savePrefs = function(gadget) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 
@@ -157,15 +146,15 @@ gadgets.GadgetService = function() {
 };
 
 gadgets.GadgetService.prototype.setHeight = function(elementId, height) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 gadgets.GadgetService.prototype.setTitle = function(gadget, title) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 gadgets.GadgetService.prototype.setUserPref = function(id) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 
@@ -309,7 +298,7 @@ gadgets.LayoutManager = function() {
  * @return {Object} HTML element that is the chrome for the given gadget
  */
 gadgets.LayoutManager.prototype.getGadgetChrome = function(gadget) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 // -------------------
@@ -362,7 +351,7 @@ gadgets.FloatLeftLayoutManager.prototype.getGadgetChrome =
   if (layoutRoot) {
     var chrome = document.createElement('div');
     chrome.className = 'gadgets-gadget-chrome';
-    chrome.style.cssFloat = 'left'
+    chrome.style.cssFloat = 'left';
     layoutRoot.appendChild(chrome);
     return chrome;
   } else {
@@ -456,7 +445,7 @@ gadgets.Gadget.prototype.getContent = function(continuation) {
  *     the one and only argument
  */
 gadgets.Gadget.prototype.getTitleBarContent = function(continuation) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 /**
@@ -465,7 +454,7 @@ gadgets.Gadget.prototype.getTitleBarContent = function(continuation) {
  *     content as the one and only argument
  */
 gadgets.Gadget.prototype.getUserPrefsDialogContent = function(continuation) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 /**
@@ -474,7 +463,7 @@ gadgets.Gadget.prototype.getUserPrefsDialogContent = function(continuation) {
  *     the one and only argument
  */
 gadgets.Gadget.prototype.getMainContent = function(continuation) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 /*
@@ -702,26 +691,6 @@ gadgets.IfrGadget.prototype.generateForm = function(gadget) {
       this.id +').handleSaveUserPrefs()"> <input type="button" value="'+eXo.gadget.UIGadget.CancelTitle+'" onclick="gadgets.container.getGadget(' +
       this.id +').handleCancelUserPrefs()">';
     parentEl.appendChild(saveEl);
-    
-    /** Minh Hoang TO: Instantly remove the noCache and Debug boxes
-    if(gadget.isdev) {
-      //Are we in a portlet ? if not, we don't had  this code because we can't save the value
-      var gadgetEl = document.getElementById("gadget_" + gadget.id) ;
-      var portletFragment = eXo.core.DOMUtil.findAncestorByClass(gadgetEl, "PORTLET-FRAGMENT");
-
-      if (portletFragment) {
-        var devEl = document.createElement("div");
-        devEl.className = "devToolbar";
-        devEl.innerHTML = '<table>' +
-                          '<tr><td>'+eXo.gadget.UIGadget.Cache+'</td><td><input type="checkbox"' + (gadget.nocache ? ' checked=""' : "") + ' onclick="gadgets.container.getGadget(' + this.id + ').setNoCache(checked)"/></td></tr>' +
-                          '<tr><td>'+eXo.gadget.UIGadget.Debug+'</td><td><input type="checkbox"' + (gadget.debug ? ' checked=""' : "") + ' onclick="gadgets.container.getGadget(' + this.id + ').setDebug(checked)"/></td></tr>' +
-                          '</table>';
-        parentEl.appendChild(devEl);
-      }
-    }
-    */
-
-
 };
 
 gadgets.IfrGadget.prototype.buildUserPrefsDialog = function(content) {
@@ -903,7 +872,7 @@ gadgets.Container.prototype.renderGadgets = function() {
  * @param {Object} gadget Gadget object
  */
 gadgets.Container.prototype.renderGadget = function(gadget) {
-  throw Error(gadgets.error.SUBCLASS_RESPONSIBILITY);
+  throw Error(gadgets.errors.SUBCLASS_RESPONSIBILITY);
 };
 
 gadgets.Container.prototype.nextGadgetInstanceId_ = 0;

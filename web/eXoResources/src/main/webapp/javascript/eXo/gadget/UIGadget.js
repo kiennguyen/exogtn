@@ -30,21 +30,11 @@ eXo.gadget.UIGadget = {
      * @param {boolean} debug normal or debug mode (0, 1)
      * @param {String} nocache value indicate cache or nocache at shindig level (0, 1)
      */
-	createGadget : function(url, id, metadata, userPref, view, hostName, isdev, debug, nocache) {
-		//eXo = eXo || {};
-		window.gadgets = window.gadgets || {};
-		eXo.gadgets = window.gadgets;
-		//window.gadgets = eXo.gadget.Gadgets;
+		createGadget : function(url, id, metadata, userPref, view, hostName, isdev, debug, nocache) {
 		var loader = eXo.core.AsyncLoader;
-		if (!eXo.gadgets || !eXo.gadgets.rpc) {
-			//eXo.core.Loader.register('rpc', '1.0.0',true, 0, hostName + '/js/pubsub.js?c=1');
-			//eXo.core.Loader.register('eXo.gadgets.Gadgets', '/eXoResources/javascript/eXo/gadget/Gadgets.js');
-			//eXo.core.Loader.register('eXo.gadgets.ExoBasedUserPrefStore', '/eXoResources/javascript/eXo/gadget/ExoBasedUserPrefStore.js');
-		}
-		loader.loadJS([hostName + '/js/gadget-container.js?c=1'], eXo.gadget.UIGadget.createCallback, arguments, null);
-		//eXo.core.Loader.init("rpc","eXo.gadgets.Gadgets","eXo.gadgets.ExoBasedUserPrefStore", 
-		//eXo.gadget.UIGadget.createCallback, null, arguments);
-	},
+		loader.loadJS([hostName + '/js/gadget-container.js?c=1' + (debug ? "&debug=1": "") + (nocache ? "&nocache=1" : "&nocache=0")], 
+									eXo.gadget.UIGadget.createCallback, arguments, null);
+		},
     
     createCallback : function(url, id, metadata, userPref, view, hostName, isdev, debug, nocache) {
         //TODO: dang.tung - set language for gadget

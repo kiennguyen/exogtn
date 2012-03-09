@@ -1,0 +1,85 @@
+#{decorate path=navigation.gtmpl/}
+#{param name=session/}
+
+<%
+	def consumer = session.getConsumer();
+	def message = session.getMessage();
+	def props = session.getPropertyNames();
+	def key, secret, callback_url, properties;
+	if (consumer != null) {
+		key = consumer.getConsumerKey();
+		secret = consumer.getConsumerSecret();
+		callback_url = consumer.getCallbackURL();
+		properties = consumer.getProperties();
+	} else {
+		def params = session.getParameters();
+		if (params != null && params.size() > 0) {
+			key = params.remove("key");
+			secret = params.remove("secret");
+			callback_url = params.remove("callback_url");
+			properties = params;
+		}
+	}
+	
+	def errors = session.getErrors();
+	def keyErr = "";
+	def secretErr = "";
+	def callback_urlErr = "";
+	if (errors != null) {
+		keyErr = errors.get('key');
+		secretErr = errors.get('secret');
+		callback_urlErr = errors.get('callback_url');
+	}
+%>
+
+<div class="add-consumer">
+	<form action="@{UIConsumerManagement.addNewConsumer()}" method="post" align="center">
+		<div>
+			<h2>Add new Consumer</h2>
+			<p class="help-icon" alt="Help"></p>
+		</div>
+		
+		<table>
+			<tr>
+				<td>Consumer key:</td>
+				<td>
+					<input type="text" name="key" value="${key}" /> *
+				</td>
+				<td>
+					<div class="oauth-message">${keyErr}</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Consumer secret:</td>
+				<td>
+					<input type="text" name="secret" value="${secret}" /> *
+				</td>
+				<td>
+					<div class="oauth-message">${secretErr}</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Callback Url:</td>
+				<td>
+					<input type="text" name="callback_url" value="${callback_url}" /> *
+				</td>
+				<td>
+					<div class="oauth-message">${callback_urlErr}</div>
+				</td>
+			</tr>
+			<% for (def prop : props) {%>
+				<tr>
+					<td>${prop}:</td>
+					<td><input type="text" name="${prop}" value="" /></td>
+				</tr>
+			<% } %>
+		</table>
+		
+		<div class="help-notification ui-widget-content ui-corner-all" style="display: none; ">
+		</div>
+		
+		<input type="submit" value="Submit" />
+		<input type="submit" value="Clear" />
+		<br />
+	</form>
+</div>

@@ -1,10 +1,3 @@
-.AddConsumer h1 {
-	font-size: 18px;
-	color: black;
-	text-align: center;
-	font-weight:bold;
-}
-
 .ONavigation {
 	font-size: 14px;
 	text-align: left;
@@ -40,31 +33,6 @@
 	font-weight:bold;
 }
 
-.OAuthConsumer h1 {
-	font-size: 18px;
-	color: black;
-	text-align: center;
-	font-weight:bold;
-}
-
-.OAuthConsumer table {	
-	table-layout: fixed;
-}
-
-.OAuthConsumer table td {
-	word-wrap: break-word;
-}
-
-.ConsumerDetail h2 {
-	font-size: 14px;
-	color: black;
-	font-weight: bold;
-}
-
-.ConsumerDetail table {	
-	table-layout: fixed;
-}
-
-.ConsumerDetail table td {
-	word-wrap: break-word;
+.help a {
+	background-image: url("../image/help.png");
 }

@@ -87,6 +87,13 @@
          <title>OAuth Consunmer Information</title>
          <keywords>juzu</keywords>
       </portlet-info>
+      <portlet-preferences>
+         <preference>
+            <name>consumer</name>
+            <value>par:/conf/consumer/extension.xml</value>
+            <read-only>false</read-only>
+         </preference>
+      </portlet-preferences>
    </portlet>
    <portlet>
       <portlet-name>UITokenManagement</portlet-name>
@@ -112,17 +119,4 @@
          <keywords>juzu</keywords>
       </portlet-info>
    </portlet>
-   <filter>
-      <filter-name>HeaderFilter</filter-name>
-      <filter-class>org.exoplatform.oauth.provider.management.filters.HeaderFilter</filter-class>
-      <lifecycle>RENDER_PHASE</lifecycle>
-   </filter>
-   <filter-mapping>
-      <filter-name>HeaderFilter</filter-name>
-      <portlet-name>UIConsumerManagement</portlet-name>
-   </filter-mapping>
-   <filter-mapping>
-      <filter-name>HeaderFilter</filter-name>
-      <portlet-name>UITokenManagement</portlet-name>
-   </filter-mapping>
 </portlet-app>

@@ -23,6 +23,9 @@ import org.exoplatform.oauth.provider.OAuthToken;
 import org.juzu.SessionScoped;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Named;
 
@@ -43,69 +46,85 @@ public class Session implements Serializable
    private String message;
 
    private String currentUser;
+   
+   private List<String> propertyNames;
+   
+   private Map<String, String> parameters;
+   
+   private Map<String, String> errors;
 
-   /**
-    * @param consumer the consumers to set
-    */
    public void setConsumer(Consumer consumer)
    {
       this.consumer = consumer;
    }
 
-   /**
-    * @return the consumers
-    */
    public Consumer getConsumer()
    {
       return consumer;
    }
 
-   /**
-    * @param accessToken the token to set
-    */
    public void setAccessToken(OAuthToken accessToken)
    {
       this.accessToken = accessToken;
    }
 
-   /**
-    * @return the token
-    */
    public OAuthToken getAccessToken()
    {
       return accessToken;
    }
 
-   /**
-    * @param message the message to set
-    */
    public void setMessage(String message)
    {
       this.message = message;
    }
 
-   /**
-    * @return the message
-    */
    public String getMessage()
    {
       return message;
    }
 
-   /**
-    * @param currentUser the currentUser to set
-    */
    public void setCurrentUser(String currentUser)
    {
       this.currentUser = currentUser;
    }
 
-   /**
-    * @return the currentUser
-    */
    public String getCurrentUser()
    {
       return currentUser;
+   }
+
+   public void setPropertyNames(List<String> propertyNames)
+   {
+      this.propertyNames = propertyNames;
+   }
+
+   public List<String> getPropertyNames()
+   {
+      propertyNames = new ArrayList<String>();
+      propertyNames.add("name");
+      propertyNames.add("description");
+      propertyNames.add("website");
+      return propertyNames;
+   }
+
+   public Map<String, String> getParameters()
+   {
+      return parameters;
+   }
+
+   public void setParameters(Map<String, String> parameters)
+   {
+      this.parameters = parameters;
+   }
+
+   public Map<String, String> getErrors()
+   {
+      return errors;
+   }
+
+   public void setErrors(Map<String, String> errors)
+   {
+      this.errors = errors;
    }
 
 }

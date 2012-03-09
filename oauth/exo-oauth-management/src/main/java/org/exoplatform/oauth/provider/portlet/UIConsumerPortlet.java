@@ -75,7 +75,7 @@ public class UIConsumerPortlet extends GenericPortlet
       getPortletContext().getRequestDispatcher("/jsp/consumer.jsp").include(request, response);
    }
 
-   @ProcessAction(name = "addConsumer")
+   @ProcessAction(name = "add")
    public void addConsumer(ActionRequest request, ActionResponse response)
    {
       String consumerKey = request.getParameter("consumerKey");

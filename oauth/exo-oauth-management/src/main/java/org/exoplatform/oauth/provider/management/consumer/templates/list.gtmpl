@@ -1,0 +1,45 @@
+#{param name=consumers/}
+
+<%
+	def props = session.getPropertyNames();
+%>
+<% if(consumers != null && consumers.size() > 0) { %>
+	<table border="1">
+		<tr>
+			<th valign="top"><b>Consumer Key</b></th>
+			<th valign="top"><b>Consumer Secret</b></th>
+			<th valign="top"><b>Callback Url</b></th>
+			<% for (def prop : props) {%>
+	        	<th valign="top"><b>${prop}</b></th>
+	        <% } %>
+			<th valign="top"><b>Action</b></th>
+		</tr>
+		 <% for (def consumer : consumers) { %>
+			<tr>
+				<td>
+				    <p>
+				    	<a href="@{UIConsumerManagement.showConsumerDetail(consumerKey = consumer.consumerKey)}">${consumer.consumerKey}</a>
+  					</p>
+				</td>
+				<td>${consumer.consumerSecret}</td>
+				<td>${consumer.callbackURL}</td>
+				<% for (def prop : props) {
+					def propValue = consumer.getProperty(prop);
+					if (propValue != null) {
+				%>
+					<td>${propValue}</td>
+				<% 	} else { %>
+					<td>---</td>
+				<%  } 
+					 } %>
+				<td>
+				    <p>
+				    	<a href="@{UIConsumerManagement.deleteConsumer(consumerKey = consumer.consumerKey)}">Delete</a>
+  					</p>
+				</td>
+			</tr>
+		<% } %>
+	</table>
+<% } else {%>
+	<div>No consumer found</div>
+<% } %>

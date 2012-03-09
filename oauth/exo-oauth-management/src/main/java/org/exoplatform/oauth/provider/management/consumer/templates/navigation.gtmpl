@@ -1,6 +1,8 @@
-<div class="OAuthConsumer">
-	<div class="ONavigation"><a href="@{UIConsumerManagement.index()}"><<< Back to Home</a></div>
+<div class="oauth-consumer">
+	<div class="navigation-normal"><a href="@{UIConsumerManagement.index()}"><<< Back to Home</a></div>
 	<br />
 	
-	#{insert/}
+	<div class="pdata">
+		#{insert/}
+	</div>
 </div>

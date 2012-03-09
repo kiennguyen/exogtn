@@ -1,0 +1,139 @@
+.navigation-normal {
+	font-size: 14px;
+	text-align: left;
+	color: #0094C2;
+}
+
+.navigation-over {
+	font-size: 14px;
+	text-align: left;
+	color: #00A0D1;
+	font-weight: bold;
+}
+
+.help-icon {
+	width: 14px;
+	height: 14px;
+	background-image: url("../image/help.png");
+}
+
+.edit-icon {
+	width: 16px;
+	height: 16px;
+	background-image: url("../image/edit.png");
+}
+
+.delete-icon {
+	width: 16px;
+	height: 16px;
+	background-image: url("../image/delete.png");
+}
+
+.row-over {
+	background-color: #F8F8F8;
+}
+
+.row-normal {
+	background-color: white;
+}
+
+.oauth-submit {
+	background-color: #00A0D1;
+	color: white;
+	text-align: center;
+	webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px 10px 10px 5px;
+}
+
+.oauth-message {
+	color: red;
+	text-align: center;
+	font-size: 14px;
+}
+
+.oauth-consumer h1 {
+	font-size: 16px;
+	color: black;
+	text-align: center;
+	font-weight:bold;
+}
+
+.all-consumer {
+  padding: 1em;
+}
+
+.all-consumer h1 {
+	text-align: center;
+}
+
+.all-consumer table {	
+	table-layout: fixed;
+	border: 1px solid #AAA;
+}
+
+.all-consumer table td {
+	word-wrap: break-word;
+}
+
+.all-consumer table th {
+	background-color: #C9C299;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.consumer-detail h2 {
+	font-size: 14px;
+	color: black;
+	font-weight: bold;
+}
+
+.consumer-detail table {	
+	table-layout: fixed;
+	font-size: 15px;
+}
+
+.consumer-detail table tr {	
+	border-bottom: 1px solid #EEE;
+}
+
+.consumer-detail table tr:FIRST-CHILD {	
+	border-top: 1px solid #EEE;
+}
+
+.consumer-detail table td {
+	word-wrap: break-word;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.consumer-detail table td:FIRST-CHILD {
+	width: 20%;
+	word-wrap: break-word;
+	font-weight: bold;
+}
+
+.add-consumer {
+	width: 500px;
+	border: none;
+	background: #F8F8F8;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;	
+}
+
+.add-consumer h1 {
+	font-size: 16px;
+	color: black;
+	text-align: center;
+	font-weight: bold;
+}
+
+.add-consumer table td:FIRST-CHILD {
+	text-align: right;
+}
+
+.add-consumer table {
+	text-align: left;
+	padding: 1em;
+}

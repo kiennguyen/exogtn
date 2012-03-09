@@ -1,0 +1,30 @@
+<%
+	def props = session.getPropertyNames();
+%>
+
+<div class="all-consumer">
+	<div><h1>OAuth
+	Provider: Manage Consumer Applications</h1></div>
+	<div>
+		<input type="text" class="text">
+		<select class="type">
+	        <option value="key">Consumer Key</option>
+	        <option value="secret">Consumer Secret</option>
+	        <option value="callback_url">Callback Url</option>
+	        <% for (def prop : props) {%>
+	        	<option value="${prop}">${prop}</option>
+	        <% } %>
+	  </select>
+		<input type="submit" class="submit" value="Search">
+	</div>
+	<br />
+	
+	<div class="result">
+	</div>
+	
+	<br />
+	<p>
+  	 <a class="oauth-submit ui-corner-all" href="@{UIConsumerManagement.showAddConsumer()}">Add a new Consumer</a>
+	</p>
+
+</div>

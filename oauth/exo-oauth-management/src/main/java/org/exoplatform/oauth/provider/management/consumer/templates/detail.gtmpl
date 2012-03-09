@@ -1,0 +1,62 @@
+#{decorate path=navigation.gtmpl/}
+
+<%
+	def consumer = session.getConsumer();
+	def accessToken = session.getAccessToken();
+	def props = session.getPropertyNames();
+%>
+
+<div class="consumer-detail">
+	<% if (consumer != null) { %>
+	<div><h2>Consumer Information</h2></div>
+	<table align="center">
+	  <tbody>
+		<tr>
+			<td class="label">Consumer key</td>
+			<td class="value">${consumer.consumerKey}</td>
+		</tr>
+		<tr>
+			<td class="label">Consumer Secret</td>
+			<td class="value">${consumer.consumerSecret}</td>
+		</tr>
+		<tr>
+			<td class="label">Callback Url</td>
+			<td class="value">${consumer.getCallbackURL()}</td>
+		</tr>
+		<% for (def prop : props) {
+			def propValue = consumer.getProperty(prop);
+		%>
+			<tr>
+				<td class="label">${prop}</td>
+				<td class="value">${propValue}</td>
+			</tr>
+		<% } %>
+	  </tbody>
+	</table>
+	<% } %>
+	<br />
+	<% if (accessToken != null) { %>
+		<h2>Your access token for this consumer</h2>
+		<table>
+		  <tbody>
+			<tr>
+				<td class="label">Access Token</td>
+				<td class="value">${accessToken.getToken()}<td>
+			</tr>
+			<tr>
+				<td class="label">Token Secret</td>
+				<td class="value">${accessToken.getTokenSecret()}</td>
+			</tr>
+		  </tbody>
+		</table>
+		<br />
+		<a class="oauth-submit" href="@{UIConsumerManagement.createAccessToken(consumerKey = consumer.consumerKey)}">Recreate the Access Token</a>
+	<% } else { %>
+		<h2>Create an Access Token for this consumer</h2>
+		<br />
+		<a class="oauth-submit" href="@{UIConsumerManagement.createAccessToken(consumerKey = consumer.consumerKey)}">Create the Access Token</a>
+	<% } %>
+</div>
+
+
+	
